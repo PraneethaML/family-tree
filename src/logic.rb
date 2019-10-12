@@ -17,21 +17,35 @@ class Logic
 	end
 
 	def read_input(filename)
-		
-		# print no file found for invalid or no file available
-		# read the file contents line by line if found
-
-		puts "yay"
-
+	 	File.open("input.txt").each do |input|
+	 		command, *params = input.split /\s/
+    		is_valid_input = validate_input(command,params)
+	 	end
 	end
 
-	# def validate_input
-		
-	# end
+	def validate_input(command,params)
+		@family_tree = FamilyTree.new
+		case command
+		when ADD_CHILD 
+			if params.length != 3
+				return false, "3 parameters required"
+			else
+				mother_name = params[0]
+				child_name = params[1]
+				child_gender = params[2]
+				mother_node = @family_tree.validate_member(mother_name)
+				
+				return false if mother_node.nil?
+				return false if mother_node.content[:gender] != 'female'
 
-	# def process_input
-		
-	# end
+				return true		
+			end
+		when GET_RELATIONSHIP 
+			puts "pass"
+		else 
+			return false, "Invalid input command"
+		end
+	end
 end
 
 begin 
