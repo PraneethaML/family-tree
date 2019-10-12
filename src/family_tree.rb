@@ -1,43 +1,48 @@
 class FamilyTree
+
+	def initialize(tree)
+		@tree = tree
+		@root = tree.root
+	end
 	
-	def add_child
-		
+	def add_child(params)
+		puts "hey you are in add child function of family tree and params are #{params}"
 	end
 
-	def get_relationship
-		
+	def get_relationship(params)
+		puts "hey you are in get get_relationship of family tree and params are #{params}"
 	end
 
-	def get_gender
+	# def get_gender
 		
-	end
+	# end
 
-	def get_siblings
+	# def get_siblings
 		
-	end
+	# end
 
-	def get_children
+	# def get_children
 		
-	end
+	# end
 
-	def get_paternal_uncle
+	# def get_paternal_uncle
 		
-	end
+	# end
 
-	def get_maternal_uncle
+	# def get_maternal_uncle
 		
-	end
+	# end
 
-	def get_paternal_aunt
+	# def get_paternal_aunt
 		
-	end
+	# end
 
-	def get_maternal_aunt
+	# def get_maternal_aunt
 		
-	end
+	# end
 
 	def get_member(member_name)
-		anga.detect { |node|
+		@root.detect { |node|
 			node.name.downcase == member_name.downcase 
 		}
 	end
