@@ -1,5 +1,8 @@
-Module CreateShanFamilyTree
-		anga = Tree::TreeNode.new(root, {gender: 'female', relation: 'root'})
+require 'tree'   
+class CreateShanFamilyTree
+	
+	def create_basic_tree
+		anga = Tree::TreeNode.new('anga', {gender: 'female', relation: 'root'})
 		shan = anga << Tree::TreeNode.new('shan', {gender: 'male', relation: 'spouse'}) 
 
 
@@ -47,5 +50,6 @@ Module CreateShanFamilyTree
 
 		atya = satya << Tree::TreeNode.new('atya', {gender: 'female', relation: 'child'})
 
-
+		return anga
+	end
 end
