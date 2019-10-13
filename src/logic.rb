@@ -29,7 +29,7 @@ class Logic
     			 	if child_added
     			 		puts "CHILD_ADDITION_SUCCEEDED"
     			 	else
-    			 		puts "CHILD_ADDITION_FAILED"
+    			 		puts message
     			 	end
     			 when 'GET_RELATIONSHIP'
     			 	@family_tree.get_relationship(params)
@@ -52,12 +52,15 @@ class Logic
 				child_gender = params[2]
 				mother_node = @family_tree.get_member(mother_name)
 				
-				return false, "CHILD_ADDITION_FAILED" if mother_node.nil?
+				return false, "PERSON_NOT_FOUND" if mother_node.nil?
 				return false, "CHILD_ADDITION_FAILED" if mother_node.content[:gender] != 'female'
 
 				return true	
 			end
 		when 'GET_RELATIONSHIP' 
+			person = @family_tree.get_member(params[0])
+			return false, "PERSON_NOT_FOUND" if person.nil?
+
 			return true
 		else 
 			return false, "Invalid input command"
@@ -93,7 +96,7 @@ shan_family.create_basic_family('satya','atya','female','child')
 shan_family.create_basic_family('dritha','yodhan','male','child')
 shan_family.create_basic_family('asva','satvy','female','spouse')
 shan_family.create_basic_family('vyas','krpi','female','spouse')
-shan_family.create_basic_family('jnki','lavanya','female','child')
+shan_family.create_basic_family('jnki','lavnya','female','child')
 shan_family.create_basic_family('satvy','vasa','male','child')
 shan_family.create_basic_family('krpi','kriya','male','child')
 shan_family.create_basic_family('krpi','krithi','female','child')
