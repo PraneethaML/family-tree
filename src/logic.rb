@@ -3,12 +3,12 @@ load 'create_shan_family_tree.rb'
 
 class Logic
 	
-	def initialize(tree)
+	def initialize(shan_family)
 		if ARGV.length == 1
 			filename = ARGV.first
 			is_file_exists = File.file?(filename)
 			if is_file_exists
-				@tree = tree
+				@shan_family = shan_family
 				process_input(filename)
 			else
 				puts "File #{filename} does not exist"
@@ -25,7 +25,12 @@ class Logic
     		if is_valid_input
     			case command
     			 when 'ADD_CHILD'
-    			 	@family_tree.add_child(params)
+    			 	child_added = @family_tree.add_child(params)
+    			 	if child_added
+    			 		puts "CHILD_ADDITION_SUCCEEDED"
+    			 	else
+    			 		puts "CHILD_ADDITION_FAILED"
+    			 	end
     			 when 'GET_RELATIONSHIP'
     			 	@family_tree.get_relationship(params)
     			 end			
@@ -36,7 +41,7 @@ class Logic
 	end
 
 	def validate_input(command,params)
-		@family_tree = FamilyTree.new(@tree)
+		@family_tree = FamilyTree.new(@shan_family)
 		case command
 		when 'ADD_CHILD' 
 			if params.length != 3
@@ -61,7 +66,40 @@ class Logic
 end
 
 begin 
-c = CreateShanFamilyTree.new
-tree = c.create_basic_tree
-Logic.new(tree)
+shan_family = CreateShanFamilyTree.new('anga')
+# create_basic_family(member1, member2, member2_gender, member2_relation_to_member1)
+shan_family.create_basic_family('anga','shan','male','spouse')
+shan_family.create_basic_family('anga','chit','male','child')
+shan_family.create_basic_family('anga','ish','male','child')
+shan_family.create_basic_family('anga','vich','male','child')
+shan_family.create_basic_family('anga','aras','male','child')
+shan_family.create_basic_family('anga','satya','male','child')
+shan_family.create_basic_family('chit','amba','female','spouse')
+shan_family.create_basic_family('vich','lika','female','spouse')
+shan_family.create_basic_family('aras','chitra','female','spouse')
+shan_family.create_basic_family('vyan','satya','male','spouse')
+shan_family.create_basic_family('amba','dritha','female','child')
+shan_family.create_basic_family('amba','tritha','female','child')
+shan_family.create_basic_family('amba','vritha','male','child')
+shan_family.create_basic_family('dritha','jaya','male','spouse')
+shan_family.create_basic_family('lika','vila','female','child')
+shan_family.create_basic_family('lika','chika','female','child')
+shan_family.create_basic_family('chitra','jnki','female','child')
+shan_family.create_basic_family('chitra','ahit','male','child')
+shan_family.create_basic_family('jnki','arit','male','spouse')
+shan_family.create_basic_family('satya','asva','male','child')
+shan_family.create_basic_family('satya','vyas','male','child')
+shan_family.create_basic_family('satya','atya','female','child')
+shan_family.create_basic_family('dritha','yodhan','male','child')
+shan_family.create_basic_family('asva','satvy','female','spouse')
+shan_family.create_basic_family('vyas','krpi','female','spouse')
+shan_family.create_basic_family('jnki','lavanya','female','child')
+shan_family.create_basic_family('satvy','vasa','male','child')
+shan_family.create_basic_family('krpi','kriya','male','child')
+shan_family.create_basic_family('krpi','krithi','female','child')
+
+# shan_family.print_tree
+Logic.new(shan_family)
+
+# shan_family.print_tree
 end
