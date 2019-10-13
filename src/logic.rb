@@ -94,15 +94,15 @@ shan_family.create_basic_family('satya','asva','male','child')
 shan_family.create_basic_family('satya','vyas','male','child')
 shan_family.create_basic_family('satya','atya','female','child')
 shan_family.create_basic_family('dritha','yodhan','male','child')
-shan_family.create_basic_family('asva','satvy','female','spouse')
 shan_family.create_basic_family('vyas','krpi','female','spouse')
+shan_family.create_basic_family('asva','satvy','female','spouse')
 shan_family.create_basic_family('jnki','lavnya','female','child')
-shan_family.create_basic_family('satvy','vasa','male','child')
 shan_family.create_basic_family('krpi','kriya','male','child')
+shan_family.create_basic_family('satvy','vasa','male','child')
 shan_family.create_basic_family('krpi','krithi','female','child')
 
 # shan_family.print_tree
 Logic.new(shan_family)
-
+# puts Time.now
 # shan_family.print_tree
 end

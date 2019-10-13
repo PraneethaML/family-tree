@@ -6,3 +6,4 @@ GET_RELATIONSHIP Pjali Son
 ADD_CHILD Asva Vani Female
 GET_RELATIONSHIP Vasa Siblings
 GET_RELATIONSHIP Atya Sister-In-Law
+GET_RELATIONSHIP Lavnya Brother-In-Law

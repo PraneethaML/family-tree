@@ -8,7 +8,7 @@ class FamilyTree
 	def create_node(hash)
 		mother = get_member(hash['mothers_name'])
 		begin
-			mother << Tree::TreeNode.new(hash['child_name'], {gender: hash['gender'], relation: hash['relation']})
+			mother << Tree::TreeNode.new(hash['child_name'], {gender: hash['gender'], relation: hash['relation'], created_time: Time.now})
 			return true
 		rescue
 			return false
@@ -172,12 +172,12 @@ class FamilyTree
 			spouse_sibllings = spouse.siblings
 			spouse_sibllings.each { |s|
 				if s.content[:gender] == 'male' && s.content[:relation] == 'child'
-					brother_in_laws << s.name
+					brother_in_laws << {name: s.name, time: s.content[:created_time]}
 				elsif s.content[:gender] == 'female' && s.content[:relation] == 'child'
 						children_nodes = s.children
 						children_nodes.each { |c|
 							if c.content[:gender] == 'male' && c.content[:relation] == 'spouse'
-								brother_in_laws << c.name
+								brother_in_laws << {name: c.name, time: c.content[:created_time]}
 							end
 						  }
 				end
@@ -190,7 +190,7 @@ class FamilyTree
 					children_nodes = s.children
 					children_nodes.each { |c|
 						if c.content[:relation] == 'spouse' && c.content[:gender] == 'male'
-							brother_in_laws << c.name
+							brother_in_laws << {name: c.name, time: c.content[:created_time]}
 						end
 					  }
 				end
@@ -200,7 +200,9 @@ class FamilyTree
 		if brother_in_laws.empty?
 			puts "NONE"
 		else
-			puts brother_in_laws.join(' ')
+			sorted_bro_in_laws = brother_in_laws.sort_by! { |k| k[:time]  }
+			sorted_brother_in_law_names = sorted_bro_in_laws.map { |e| e[:name]  }
+			puts sorted_brother_in_law_names.join(' ')
 		end
 	end
 
@@ -214,12 +216,12 @@ class FamilyTree
 			spouse_sibllings = spouse.siblings
 			spouse_sibllings.each { |s|
 				if s.content[:gender] == 'female' && s.content[:relation] == 'child'
-					sister_in_laws << s.name
+					sister_in_laws << {name: s.name, time: s.content[:created_time]}
 				elsif s.content[:gender] == 'male' && s.content[:relation] == 'child'
 						children_nodes = s.children
 						children_nodes.each { |c|
 							if c.content[:gender] == 'female' && c.content[:relation] == 'spouse'
-								sister_in_laws << c.name
+								sister_in_laws << {name: c.name, time: c.content[:created_time]}
 							end
 						  }
 				end
@@ -232,7 +234,7 @@ class FamilyTree
 					children_nodes = s.children
 					children_nodes.each { |c|
 						if c.content[:relation] == 'spouse' && c.content[:gender] == 'female'
-							sister_in_laws << c.name
+							sister_in_laws << {name: c.name, time: c.content[:created_time]}
 						end
 					  }
 				end
@@ -242,7 +244,9 @@ class FamilyTree
 		if sister_in_laws.empty?
 			puts "NONE"
 		else
-			puts sister_in_laws.join(' ')
+			sorted_sis_in_laws = sister_in_laws.sort_by! { |k| k[:time]  }
+			sorted_sister_in_law_names = sorted_sis_in_laws.map { |e| e[:name]  }
+			puts sorted_sister_in_law_names.join(' ')
 		end
 	end
 

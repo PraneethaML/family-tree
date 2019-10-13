@@ -1,14 +1,14 @@
 require 'tree'   
 class CreateShanFamilyTree
 	def initialize(root)
-		@root = Tree::TreeNode.new(root, {gender: 'female', relation: 'root'})
+		@root = Tree::TreeNode.new(root, {gender: 'female', relation: 'root', created_time: Time.now})
 		
 	end
 
 	def add_to_family(hash)
 		member1 = get_member(hash[:member1])
 		begin
-			member1 << Tree::TreeNode.new(hash[:member2], {gender: hash[:member2_gender], relation: hash[:member2_relation_to_member1]})
+			member1 << Tree::TreeNode.new(hash[:member2], {gender: hash[:member2_gender], relation: hash[:member2_relation_to_member1], created_time: Time.now})
 		rescue
 			return false
 		end
