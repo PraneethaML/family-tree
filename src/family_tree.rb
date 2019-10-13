@@ -57,7 +57,7 @@ class FamilyTree
 		siblings = []
 		all_siblings = get_member(member_name).siblings	
 		all_siblings.each { |sib|
-			siblings << sib.name if sib.content[:relation] == 'child'		
+			siblings << sib.name.capitalize if sib.content[:relation] == 'child'		
 		}
 		if siblings.empty?
 			puts "NONE"
@@ -70,7 +70,7 @@ class FamilyTree
 		daughters = []
 		all_children = get_member(member_name).children
 		all_children.each { |node| 
-			daughters << node.name if node.content[:relation] == 'child' && node.content[:gender] == 'female'
+			daughters << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == 'female'
 		  }
 
 		if daughters.empty?
@@ -84,7 +84,7 @@ class FamilyTree
 		sons = []
 		all_children = get_member(member_name).children
 		all_children.each { |node| 
-			sons << node.name if node.content[:relation] == 'child' && node.content[:gender] == 'male'
+			sons << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == 'male'
 		  }
 
 		if sons.empty?
@@ -101,7 +101,7 @@ class FamilyTree
 			father = sofi.parent.parent
 			uncles = father.siblings
 			uncles.each do |uncle|
-				paternal_uncles << uncle.name if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
+				paternal_uncles << uncle.name.capitalize if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
 			end
 		end
 		if paternal_uncles.empty?
@@ -119,7 +119,7 @@ class FamilyTree
 		mother = person.parent
 		uncles = mother.siblings
 		uncles.each do |uncle|
-			maternal_uncles << uncle.name if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
+			maternal_uncles << uncle.name.capitalize if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
 		end
 		
 		if maternal_uncles.empty?
@@ -136,7 +136,7 @@ class FamilyTree
 			father = person.parent.parent
 			aunts = father.siblings
 			aunts.each do |aunt|
-				paternal_aunts << aunt.name if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
+				paternal_aunts << aunt.name.capitalize if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
 			end
 		end
 		if paternal_uncles.empty?
@@ -152,7 +152,7 @@ class FamilyTree
 		mother = person.parent
 		aunts = mother.siblings
 		aunts.each { |aunt|
-			maternal_aunts << aunt.name if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
+			maternal_aunts << aunt.name.capitalize if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
 		}
 		
 		if maternal_aunts.empty?
@@ -201,7 +201,7 @@ class FamilyTree
 			puts "NONE"
 		else
 			sorted_bro_in_laws = brother_in_laws.sort_by! { |k| k[:time]  }
-			sorted_brother_in_law_names = sorted_bro_in_laws.map { |e| e[:name]  }
+			sorted_brother_in_law_names = sorted_bro_in_laws.map { |e| e[:name].capitalize  }
 			puts sorted_brother_in_law_names.join(' ')
 		end
 	end
@@ -245,7 +245,7 @@ class FamilyTree
 			puts "NONE"
 		else
 			sorted_sis_in_laws = sister_in_laws.sort_by! { |k| k[:time]  }
-			sorted_sister_in_law_names = sorted_sis_in_laws.map { |e| e[:name]  }
+			sorted_sister_in_law_names = sorted_sis_in_laws.map { |e| e[:name].capitalize  }
 			puts sorted_sister_in_law_names.join(' ')
 		end
 	end
