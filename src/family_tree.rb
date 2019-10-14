@@ -5,10 +5,10 @@ class FamilyTree
 		@root = shan_family.get_root
 	end
 
-	def create_node(hash)
-		mother = get_member(hash['mothers_name'])
+	def create_node(child_hash)
+		mother = get_member(child_hash['mothers_name'])
 		begin
-			mother << Tree::TreeNode.new(hash['child_name'], {gender: hash['gender'], relation: hash['relation'], created_time: Time.now})
+			mother << Tree::TreeNode.new(child_hash['child_name'], {gender: child_hash['gender'], relation: child_hash['relation'], created_time: Time.now})
 			return true
 		rescue
 			return false
