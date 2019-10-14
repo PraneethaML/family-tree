@@ -1,5 +1,5 @@
-load 'family_tree.rb'
-load 'create_shan_family_tree.rb'
+load 'src/family_tree.rb'
+load 'src/create_shan_family_tree.rb'
 
 class Logic
 	

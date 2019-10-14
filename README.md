@@ -4,7 +4,13 @@
 
 - cd family_tree
 - bundle install
-- ruby logic.rb ../input.txt
+- ruby src/logic.rb input.txt
+
+# To run tests
+- cd family_tree
+- cd spec
+- rspec create_shan_family_tree_spec.rb
+- rspec family_tree_spec.rb
 
 # Description about each class 
 
