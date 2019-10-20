@@ -1,6 +1,11 @@
 require 'tree'  
 class FamilyTree
 
+	GENDER={
+		male: 'male',
+		female: 'female'
+	}
+
 	def initialize(family)
 		@root = family.get_root
 	end
@@ -22,9 +27,9 @@ class FamilyTree
 		when 'Siblings'
 			get_siblings(person)
 		when 'Daughter'
-			get_children(person, 'female')
+			get_children(person, GENDER[:female])
 		when 'Son'
-			get_children(person, 'male')
+			get_children(person, GENDER[:male])
 		when 'Brother-In-Law'
 			get_sibling_in_law(person, 'brother')
 		when 'Sister-In-Law'
@@ -94,7 +99,7 @@ private
 			father = sofi.parent.parent
 			uncles = father.siblings
 			uncles.each do |uncle|
-				paternal_uncles << uncle.name.capitalize if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
+				paternal_uncles << uncle.name.capitalize if uncle.content[:gender] == GENDER[:male] && uncle.content[:relation] == 'child'
 			end
 		end
 		if paternal_uncles.empty?
@@ -112,7 +117,7 @@ private
 		mother = person.parent
 		uncles = mother.siblings
 		uncles.each do |uncle|
-			maternal_uncles << uncle.name.capitalize if uncle.content[:gender] == 'male' && uncle.content[:relation] == 'child'
+			maternal_uncles << uncle.name.capitalize if uncle.content[:gender] == GENDER[:male] && uncle.content[:relation] == 'child'
 		end
 		
 		if maternal_uncles.empty?
@@ -129,7 +134,7 @@ private
 			father = person.parent.parent
 			aunts = father.siblings
 			aunts.each do |aunt|
-				paternal_aunts << aunt.name.capitalize if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
+				paternal_aunts << aunt.name.capitalize if aunt.content[:gender] == GENDER[:female] && aunt.content[:relation] == 'child'
 			end
 		end
 		if paternal_uncles.empty?
@@ -145,7 +150,7 @@ private
 		mother = person.parent
 		aunts = mother.siblings
 		aunts.each { |aunt|
-			maternal_aunts << aunt.name.capitalize if aunt.content[:gender] == 'female' && aunt.content[:relation] == 'child'
+			maternal_aunts << aunt.name.capitalize if aunt.content[:gender] == GENDER[:female] && aunt.content[:relation] == 'child'
 		}
 		
 		if maternal_aunts.empty?
@@ -157,11 +162,11 @@ private
 
 	def get_sibling_in_law(member_name, sibling)
 			if sibling == 'brother'
-				same_gender = 'male'
-				opp_gender = 'female'
+				same_gender = GENDER[:male]
+				opp_gender = GENDER[:female]
 			elsif sibling == 'sister'
-				same_gender = 'female'
-				opp_gender = 'male'
+				same_gender = GENDER[:female]
+				opp_gender = GENDER[:male]
 			end
 			sibling_in_laws = []
 			person = get_member(member_name)
