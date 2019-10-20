@@ -4,11 +4,11 @@ create_basic_family anga chit male child
 create_basic_family anga ish male child
 create_basic_family anga vich male child
 create_basic_family anga aras male child
-create_basic_family anga satya male child
+create_basic_family anga satya female child
 create_basic_family chit amba female spouse
 create_basic_family vich lika female spouse
 create_basic_family aras chitra female spouse
-create_basic_family vyan satya male spouse
+create_basic_family satya vyan male spouse
 create_basic_family amba dritha female child
 create_basic_family amba tritha female child
 create_basic_family amba vritha male child
