@@ -17,6 +17,8 @@ class InputProcessor
 			puts "Input filename must be given as an argument"
 		end
 	end
+	
+private
 
 	def create_initial_family	
 		basic_family_file = File.file?('basic_family.txt')
@@ -46,7 +48,7 @@ class InputProcessor
     		if is_valid_input
     			case command
     			 when 'ADD_CHILD'
-    			 	child_added = @family_tree.add_child(params)
+    			 	child_added = @family_tree.create_relation(params)
     			 	if child_added
     			 		puts "CHILD_ADDITION_SUCCEEDED"
     			 	else

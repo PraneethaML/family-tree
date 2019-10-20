@@ -1,27 +1,17 @@
 require 'tree'  
 class FamilyTree
 
-	def initialize(shan_family)
-		@root = shan_family.get_root
+	def initialize(family)
+		@root = family.get_root
 	end
 
-	def create_node(child_hash)
-		mother = get_member(child_hash['mothers_name'])
-		begin
-			mother << Tree::TreeNode.new(child_hash['child_name'], {gender: child_hash['gender'], relation: child_hash['relation'], created_time: Time.now})
-			return true
-		rescue
-			return false
-		end
-	end
-	
-	def add_child(params)
-		add_child_hash = {}
-		add_child_hash['mothers_name'] = params[0].downcase
-		add_child_hash['child_name'] = params[1].downcase
-		add_child_hash['gender'] = params[2].downcase
-		add_child_hash['relation'] = 'child'
-		is_node_added = create_node(add_child_hash)
+	def create_relation(params)
+		create_relation_hash = {}
+		create_relation_hash['mothers_name'] = params[0].downcase
+		create_relation_hash['child_name'] = params[1].downcase
+		create_relation_hash['gender'] = params[2].downcase
+		create_relation_hash['relation'] = 'child'
+		is_node_added = create_member(create_relation_hash)
 		return is_node_added
 	end
 
@@ -52,7 +42,23 @@ class FamilyTree
 		end
 	end
 
+	def get_member(member_name)
+		@root.detect do |node|
+			node.name.downcase == member_name.downcase 
+		end
+	end
+
 private
+
+	def create_member(child_hash)
+		mother = get_member(child_hash['mothers_name'])
+		begin
+			mother << Tree::TreeNode.new(child_hash['child_name'], {gender: child_hash['gender'], relation: child_hash['relation'], created_time: Time.now})
+			return true
+		rescue
+			return false
+		end
+	end
 
 	def get_siblings(member_name)
 		siblings = []
@@ -192,103 +198,9 @@ private
 			if sibling_in_laws.empty?
 				puts "NONE"
 			else
-				sorted_sib_in_laws = sibling_in_laws.sort_by! { |k| k[:time]  }
+				sorted_sibling_in_laws = sibling_in_laws.sort_by! { |k| k[:time]  }
 				sorted_sibling_in_law_names = sorted_sibling_in_laws.map { |e| e[:name].capitalize  }
 				puts sorted_sibling_in_law_names.join(' ')
 			end
 		end
-
-	def get_brother_in_law(member_name)
-		brother_in_laws = []
-		person = get_member(member_name)
-
-		if person.content[:relation] == 'spouse'
-			# spouse brothers and spouse_siters_wives
-			spouse = person.parent
-			spouse_sibllings = spouse.siblings
-			spouse_sibllings.each { |s|
-				if s.content[:gender] == 'male' && s.content[:relation] == 'child'
-					brother_in_laws << {name: s.name, time: s.content[:created_time]}
-				elsif s.content[:gender] == 'female' && s.content[:relation] == 'child'
-						children_nodes = s.children
-						children_nodes.each { |c|
-							if c.content[:gender] == 'male' && c.content[:relation] == 'spouse'
-								brother_in_laws << {name: c.name, time: c.content[:created_time]}
-							end
-						  }
-				end
-			  }
-		else
-			# siter_husbands
-			siblings = person.siblings
-			siblings.each { |s|
-				if s.content[:gender] == 'female' && s.content[:relation] == 'child'
-					children_nodes = s.children
-					children_nodes.each { |c|
-						if c.content[:relation] == 'spouse' && c.content[:gender] == 'male'
-							brother_in_laws << {name: c.name, time: c.content[:created_time]}
-						end
-					  }
-				end
-			  }
-		end	
-		
-		if brother_in_laws.empty?
-			puts "NONE"
-		else
-			sorted_bro_in_laws = brother_in_laws.sort_by! { |k| k[:time]  }
-			sorted_brother_in_law_names = sorted_bro_in_laws.map { |e| e[:name].capitalize  }
-			puts sorted_brother_in_law_names.join(' ')
-		end
-	end
-
-	def get_sister_in_law(member_name)
-		sister_in_laws = []
-		person = get_member(member_name)
-
-		if person.content[:relation] == 'spouse'
-			# spouse sisters and spouse_brothers_wives
-			spouse = person.parent
-			spouse_sibllings = spouse.siblings
-			spouse_sibllings.each { |s|
-				if s.content[:gender] == 'female' && s.content[:relation] == 'child'
-					sister_in_laws << {name: s.name, time: s.content[:created_time]}
-				elsif s.content[:gender] == 'male' && s.content[:relation] == 'child'
-						children_nodes = s.children
-						children_nodes.each { |c|
-							if c.content[:gender] == 'female' && c.content[:relation] == 'spouse'
-								sister_in_laws << {name: c.name, time: c.content[:created_time]}
-							end
-						  }
-				end
-			  }
-		else
-			# brothers_wives
-			siblings = person.siblings
-			siblings.each { |s|
-				if s.content[:gender] == 'male' && s.content[:relation] == 'child'
-					children_nodes = s.children
-					children_nodes.each { |c|
-						if c.content[:relation] == 'spouse' && c.content[:gender] == 'female'
-							sister_in_laws << {name: c.name, time: c.content[:created_time]}
-						end
-					  }
-				end
-			  }
-		end	
-		
-		if sister_in_laws.empty?
-			puts "NONE"
-		else
-			sorted_sis_in_laws = sister_in_laws.sort_by! { |k| k[:time]  }
-			sorted_sister_in_law_names = sorted_sis_in_laws.map { |e| e[:name].capitalize  }
-			puts sorted_sister_in_law_names.join(' ')
-		end
-	end
-
-	def get_member(member_name)
-		@root.detect do |node|
-			node.name.downcase == member_name.downcase 
-		end
-	end
 end
