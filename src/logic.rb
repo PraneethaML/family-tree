@@ -1,7 +1,7 @@
 load 'src/family_tree.rb'
 load 'src/create_shan_family_tree.rb'
 
-class Logic
+class InputProcessor
 	
 	def initialize(shan_family)
 		if ARGV.length == 1
@@ -69,8 +69,8 @@ class Logic
 end
 
 begin 
-shan_family = CreateShanFamilyTree.new('anga')
-# create_basic_family(member1, member2, member2_gender, member2_relation_to_member1)
+shan_family = CreateInitialFamily.new('anga')
+
 shan_family.create_basic_family('anga','shan','male','spouse')
 shan_family.create_basic_family('anga','chit','male','child')
 shan_family.create_basic_family('anga','ish','male','child')
@@ -101,8 +101,6 @@ shan_family.create_basic_family('krpi','kriya','male','child')
 shan_family.create_basic_family('satvy','vasa','male','child')
 shan_family.create_basic_family('krpi','krithi','female','child')
 
-# shan_family.print_tree
 Logic.new(shan_family)
-# puts Time.now
-# shan_family.print_tree
+
 end

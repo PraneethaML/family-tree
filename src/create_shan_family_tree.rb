@@ -1,5 +1,5 @@
 require 'tree'   
-class CreateShanFamilyTree
+class CreateInitialFamily
 	def initialize(root)
 		@root = Tree::TreeNode.new(root, {gender: 'female', relation: 'root', created_time: Time.now})
 		
@@ -37,7 +37,4 @@ class CreateShanFamilyTree
 	def get_root
 		@root
 	end
-
-
-
 end
