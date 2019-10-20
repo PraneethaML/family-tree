@@ -1,8 +1,7 @@
 require 'tree'   
 class CreateInitialFamily
-	def initialize(root)
-		@root = Tree::TreeNode.new(root, {gender: 'female', relation: 'root', created_time: Time.now})
-		
+	def create_root(root)
+		@root = Tree::TreeNode.new(root, {gender: 'female', relation: 'root', created_time: Time.now})	
 	end
 
 	def add_to_family(hash)
@@ -14,12 +13,12 @@ class CreateInitialFamily
 		end
 	end
 
-	def create_basic_family(member1, member2, member2_gender, member2_relation_to_member1)
+	def create_basic_family(params)
 		hash = {
-			'member1': member1,
-			'member2': member2,
-			'member2_gender': member2_gender,
-			'member2_relation_to_member1': member2_relation_to_member1
+			'member1': params[0],
+			'member2': params[1],
+			'member2_gender': params[2],
+			'member2_relation_to_member1': params[3]
 		}
 		add_to_family(hash)
 	end

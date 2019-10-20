@@ -4,7 +4,7 @@
 - extract the file
 - cd family_tree
 - bundle install
-- ruby src/logic.rb input.txt
+- ruby src/input_processor.rb input.txt
 
 # To run tests
 - cd family_tree
@@ -15,8 +15,8 @@
 # Description about each class 
 
 - input.txt => contains sample input commands as mentioned in the question
-- CreateShanFamilyTree => has functions that allows us to create an initial family tree as given in the question
+- CreateInitialFamily => has functions that allows us to create an initial family tree as given in the question
 - FamilyTree => has functions that adds a child and gets all members as per the relationship
-- Logic => is a main class which takes input validates it and passes it to responsible functions
+- InputProcessor => is a main class which takes input validates it and passes it to responsible functions
 
 
