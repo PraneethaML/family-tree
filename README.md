@@ -9,7 +9,7 @@
 # To run tests
 - cd family_tree
 - cd spec
-- rspec create_shan_family_tree_spec.rb
+- rspec create_initial_family_spec.rb
 - rspec family_tree_spec.rb
 
 # Description about each class 
