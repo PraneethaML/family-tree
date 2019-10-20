@@ -32,13 +32,13 @@ class FamilyTree
 		when 'Siblings'
 			get_siblings(person)
 		when 'Daughter'
-			get_daughter(person)
+			get_children(person, 'female')
 		when 'Son'
-			get_son(person)
+			get_children(person, 'male')
 		when 'Brother-In-Law'
-			get_brother_in_law(person)
+			get_sibling_in_law(person, 'brother')
 		when 'Sister-In-Law'
-			get_sister_in_law(person)
+			get_sibling_in_law(person, 'sister')
 		when 'Maternal-Aunt'
 			get_maternal_aunt(person)
 		when 'Paternal-Aunt'
@@ -52,6 +52,7 @@ class FamilyTree
 		end
 	end
 
+private
 
 	def get_siblings(member_name)
 		siblings = []
@@ -66,34 +67,20 @@ class FamilyTree
 		end
 	end
 
-	def get_daughter(member_name)
-		daughters = []
+	def get_children(member_name, gender)
+		children = []
 		all_children = get_member(member_name).children
 		all_children.each { |node| 
-			daughters << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == 'female'
+			children << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == gender
 		  }
 
-		if daughters.empty?
+		if children.empty?
 			puts "NONE"
 		else
-			puts daughters.join(' ')
+			puts children.join(' ')
 		end
 	end
-
-	def get_son(member_name)
-		sons = []
-		all_children = get_member(member_name).children
-		all_children.each { |node| 
-			sons << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == 'male'
-		  }
-
-		if sons.empty?
-			puts "NONE"
-		else
-			puts sons.join(' ')
-		end
-	end
-
+	
 	def get_paternal_uncle(member_name)
 		person = get_member(member_name)
 		paternal_uncles = []
@@ -161,6 +148,55 @@ class FamilyTree
 			puts maternal_aunts.join(' ')
 		end
 	end
+
+	def get_sibling_in_law(member_name, sibling)
+			if sibling == 'brother'
+				same_gender = 'male'
+				opp_gender = 'female'
+			elsif sibling == 'sister'
+				same_gender = 'female'
+				opp_gender = 'male'
+			end
+			sibling_in_laws = []
+			person = get_member(member_name)
+
+			if person.content[:relation] == 'spouse'
+				spouse = person.parent
+				spouse_sibllings = spouse.siblings
+				spouse_sibllings.each { |s|
+					if s.content[:gender] == same_gender && s.content[:relation] == 'child'
+						sibling_in_laws << {name: s.name, time: s.content[:created_time]}
+					elsif s.content[:gender] == opp_gender && s.content[:relation] == 'child'
+							children_nodes = s.children
+							children_nodes.each { |c|
+								if c.content[:gender] == same_gender && c.content[:relation] == 'spouse'
+									sibling_in_laws << {name: c.name, time: c.content[:created_time]}
+								end
+							  }
+					end
+				  }
+			else
+				siblings = person.siblings
+				siblings.each { |s|
+					if s.content[:gender] == opp_gender && s.content[:relation] == 'child'
+						children_nodes = s.children
+						children_nodes.each { |c|
+							if c.content[:relation] == 'spouse' && c.content[:gender] == same_gender
+								sibling_in_laws << {name: c.name, time: c.content[:created_time]}
+							end
+						  }
+					end
+				  }
+			end	
+			
+			if sibling_in_laws.empty?
+				puts "NONE"
+			else
+				sorted_sib_in_laws = sibling_in_laws.sort_by! { |k| k[:time]  }
+				sorted_sibling_in_law_names = sorted_sibling_in_laws.map { |e| e[:name].capitalize  }
+				puts sorted_sibling_in_law_names.join(' ')
+			end
+		end
 
 	def get_brother_in_law(member_name)
 		brother_in_laws = []
