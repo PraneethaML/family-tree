@@ -1,7 +1,7 @@
 # family-tree
 
 # Steps to execute 
-
+- extract the file
 - cd family_tree
 - bundle install
 - ruby src/logic.rb input.txt
