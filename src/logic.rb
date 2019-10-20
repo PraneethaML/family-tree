@@ -101,6 +101,6 @@ shan_family.create_basic_family('krpi','kriya','male','child')
 shan_family.create_basic_family('satvy','vasa','male','child')
 shan_family.create_basic_family('krpi','krithi','female','child')
 
-Logic.new(shan_family)
+InputProcessor.new(shan_family)
 
 end
