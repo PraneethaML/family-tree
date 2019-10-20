@@ -18,7 +18,12 @@ class InputProcessor
 		end
 	end
 
-	def create_initial_family
+	def create_initial_family	
+		basic_family_file = File.file?('basic_family.txt')
+		if !basic_family_file
+			puts "Cannot create initial family. Need basic_family.txt to create it"
+			exit
+		end
 		queen = CreateInitialFamily.new
 		File.open('basic_family.txt').each do |input|
 			command, *params = input.split /\s/
@@ -85,5 +90,5 @@ class InputProcessor
 end
 
 begin 
-	InputProcessor.new()
+	InputProcessor.new
 end
