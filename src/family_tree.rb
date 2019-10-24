@@ -31,41 +31,35 @@ class FamilyTree
 	def get_relationship(params)
 		person = params[0]
 		relation = params[1]
-    is_valid_input = validate_input_relation(relation)
-
-    if is_valid_input
-      function = get_function_name(params)
-      send(function)
-    else
-      puts "Sorry! we will get back to you later"
-    end
-		# case relation
-		# when 'Siblings'
-  #     siblings = get_siblings(person)
-  #     print_output(siblings)
-		# when 'Daughter'
-		# 	daughters = get_children(person, GENDER[:female])
-  #     print_output(siblings)
-		# when 'Son'
-		# 	sons = get_children(person, GENDER[:male])
-  #     print_output(sons)
-		# when 'Brother-In-Law','Sister-In-Law'
-		#   get_relation_in_law(person, relation)
-		# when 'Maternal-Aunt'
-		# 	maternal_aunts = get_maternal_aunt(person)
-  #     print_output(maternal_aunts)
-		# when 'Paternal-Aunt'
-		# 	paternal_aunts = get_paternal_aunt(person)
-  #     print_output(paternal_aunts)
-		# when 'Maternal-Uncle'
-		# 	maternal_uncles = get_maternal_uncle(person)
-  #     print_output(maternal_uncles)
-		# when 'Paternal-Uncle'
-		# 	paternal_uncles = get_paternal_uncle(person)
-  #     print_output(paternal_uncles)
-		# else
-		# 	puts "Sorry! we will get back to you later"
-		# end
+    
+		case relation
+		when 'Siblings'
+      siblings = get_siblings(person)
+      print_output(siblings)
+		when 'Daughter'
+			daughters = get_children(person, GENDER[:female])
+      print_output(siblings)
+		when 'Son'
+			sons = get_children(person, GENDER[:male])
+      print_output(sons)
+		when 'Brother-In-Law','Sister-In-Law'
+		  relations = get_relation_in_law(person, relation)
+      print_output(relations)
+		when 'Maternal-Aunt'
+			maternal_aunts = get_maternal_aunt(person)
+      print_output(maternal_aunts)
+		when 'Paternal-Aunt'
+			paternal_aunts = get_paternal_aunt(person)
+      print_output(paternal_aunts)
+		when 'Maternal-Uncle'
+			maternal_uncles = get_maternal_uncle(person)
+      print_output(maternal_uncles)
+		when 'Paternal-Uncle'
+			paternal_uncles = get_paternal_uncle(person)
+      print_output(paternal_uncles)
+		else
+			puts "Sorry! we will get back to you later"
+		end
 	end
 
 	def get_member(member_name)
@@ -161,9 +155,17 @@ private
 		return maternal_aunts
 	end
 
-  def get_male_siblings(member_name)
-    get_siblings(member_name)
+  def brothers_sisters(member)
+    siblings_nodes = member.siblings 
+    actual_siblings = siblings_nodes.select{|member| member.content[:relation] == 'child'}
+    return actual_siblings
   end
+
+ def get_spouse(person)
+  children_nodes = person.children
+  spouse = children_nodes.select{|node| node.content[:relation] == 'spouse'}
+  return spouse.first
+ end
 
 	def get_relation_in_law(member_name, relation)
     if relation == 'Brother-In-Law'
@@ -178,40 +180,26 @@ private
 
     if person.content[:relation] == 'spouse'
       spouse = person.parent
-      spouse_sibllings = spouse.siblings
-      spouse_sibllings.each { |s|
-        if s.content[:gender] == same_gender && s.content[:relation] == 'child'
+      brothers_sisters.each { |s|
+        if s.content[:gender] == same_gender
           relation_in_laws << {name: s.name, time: s.content[:created_time]}
-        elsif s.content[:gender] == opp_gender && s.content[:relation] == 'child'
-            children_nodes = s.children
-            children_nodes.each { |c|
-              if c.content[:gender] == same_gender && c.content[:relation] == 'spouse'
-                relation_in_laws << {name: c.name, time: c.content[:created_time]}
-              end
-              }
+        elsif s.content[:gender] == opp_gender 
+          spouse = get_spouse(s)
+          relation_in_laws << {name: spouse.name, time: spouse.content[:created_time]} if spouse.content[:gender] == same_gender
         end
         }
     else
-      siblings = person.siblings
+      siblings = brothers_sisters(person)
       siblings.each { |s|
-        if s.content[:gender] == opp_gender && s.content[:relation] == 'child'
-          children_nodes = s.children
-          children_nodes.each { |c|
-            if c.content[:relation] == 'spouse' && c.content[:gender] == same_gender
-              relation_in_laws << {name: c.name, time: c.content[:created_time]}
-            end
-            }
+        if s.content[:gender] == opp_gender 
+          spouse = get_spouse(s)
+          relation_in_laws << {name: spouse.name, time: spouse.content[:created_time]}
         end
         }
     end 
 
-    
-    if relation_in_laws.empty?
-      puts "NONE"
-    else
-      sorted_relation_in_laws = relation_in_laws.sort_by! { |k| k[:time]  }
-      sorted_relation_in_law_names = sorted_relation_in_laws.map { |e| e[:name].capitalize  }
-      puts sorted_relation_in_law_names.join(' ')
-    end
+    sorted_relation = relation_in_laws.sort_by! { |k| k[:time]  }
+    sorted_relation_names = sorted_relation.map { |e| e[:name].capitalize  }
+    return sorted_relation_names
   end
 end
