@@ -20,36 +20,52 @@ class FamilyTree
 		return is_node_added
 	end
 
+  def validate_input_relation(relation)
+    valid_inputs = ['Siblings', 'Daughter', 'Son', 'Brother-In-Law', 'Sister-In-Law', 'Maternal-Aunt', 'Paternal-Aunt', 'Maternal-Uncle', 'Paternal-Uncle' ] 
+    
+    valid_inputs.include? relation
+  end
+
+  
+
 	def get_relationship(params)
 		person = params[0]
 		relation = params[1]
-		case relation
-		when 'Siblings'
-      siblings = get_siblings(person)
-      print_output(siblings)
-		when 'Daughter'
-			daughters = get_children(person, GENDER[:female])
-      print_output(siblings)
-		when 'Son'
-			sons = get_children(person, GENDER[:male])
-      print_output(sons)
-		when 'Brother-In-Law','Sister-In-Law'
-		  get_relation_in_law(person, relation)
-		when 'Maternal-Aunt'
-			maternal_aunts = get_maternal_aunt(person)
-      print_output(maternal_aunts)
-		when 'Paternal-Aunt'
-			paternal_aunts = get_paternal_aunt(person)
-      print_output(paternal_aunts)
-		when 'Maternal-Uncle'
-			maternal_uncles = get_maternal_uncle(person)
-      print_output(maternal_uncles)
-		when 'Paternal-Uncle'
-			paternal_uncles = get_paternal_uncle(person)
-      print_output(paternal_uncles)
-		else
-			puts "Sorry! we will get back to you later"
-		end
+    is_valid_input = validate_input_relation(relation)
+
+    if is_valid_input
+      function = get_function_name(params)
+      send(function)
+    else
+      puts "Sorry! we will get back to you later"
+    end
+		# case relation
+		# when 'Siblings'
+  #     siblings = get_siblings(person)
+  #     print_output(siblings)
+		# when 'Daughter'
+		# 	daughters = get_children(person, GENDER[:female])
+  #     print_output(siblings)
+		# when 'Son'
+		# 	sons = get_children(person, GENDER[:male])
+  #     print_output(sons)
+		# when 'Brother-In-Law','Sister-In-Law'
+		#   get_relation_in_law(person, relation)
+		# when 'Maternal-Aunt'
+		# 	maternal_aunts = get_maternal_aunt(person)
+  #     print_output(maternal_aunts)
+		# when 'Paternal-Aunt'
+		# 	paternal_aunts = get_paternal_aunt(person)
+  #     print_output(paternal_aunts)
+		# when 'Maternal-Uncle'
+		# 	maternal_uncles = get_maternal_uncle(person)
+  #     print_output(maternal_uncles)
+		# when 'Paternal-Uncle'
+		# 	paternal_uncles = get_paternal_uncle(person)
+  #     print_output(paternal_uncles)
+		# else
+		# 	puts "Sorry! we will get back to you later"
+		# end
 	end
 
 	def get_member(member_name)
