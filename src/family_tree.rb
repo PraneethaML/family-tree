@@ -26,8 +26,6 @@ class FamilyTree
     valid_inputs.include? relation
   end
 
-  
-
 	def get_relationship(params)
 		person = params[0]
 		relation = params[1]
@@ -43,7 +41,7 @@ class FamilyTree
 			sons = get_children(person, GENDER[:male])
       print_output(sons)
 		when 'Brother-In-Law','Sister-In-Law'
-		  relations = get_relation_in_law(person, relation)
+		  relations = get_relation(person, relation)
       print_output(relations)
 		when 'Maternal-Aunt'
 			maternal_aunts = get_maternal_aunt(person)
@@ -161,13 +159,39 @@ private
     return actual_siblings
   end
 
- def get_spouse(person)
-  children_nodes = person.children
-  spouse = children_nodes.select{|node| node.content[:relation] == 'spouse'}
-  return spouse.first
- end
+  def get_spouse(person)
+    children_nodes = person.children
+    spouse = children_nodes.select{|node| node.content[:relation] == 'spouse'}
+    return spouse.first
+  end
 
-	def get_relation_in_law(member_name, relation)
+  def relation_wrt_spouse(person)
+    relatives = []
+    spouse = person.parent
+    brothers_sisters.each { |s|
+      if s.content[:gender] == same_gender
+        relatives << {name: s.name, time: s.content[:created_time]}
+      elsif s.content[:gender] == opp_gender 
+        spouse = get_spouse(s)
+        relatives << {name: spouse.name, time: spouse.content[:created_time]} if spouse.content[:gender] == same_gender
+      end
+      }
+    return relatives
+  end
+
+  def relation_wrt_child(person, same_gender, opp_gender)
+    relatives = []
+    siblings = brothers_sisters(person)
+    siblings.each { |s|
+      if s.content[:gender] == opp_gender 
+        spouse = get_spouse(s)
+        relatives << {name: spouse.name, time: spouse.content[:created_time]}
+      end
+      }
+    return relatives
+  end
+
+	def get_relation(member_name, relation)
     if relation == 'Brother-In-Law'
       same_gender = GENDER[:male]
       opp_gender = GENDER[:female]
@@ -175,30 +199,17 @@ private
       same_gender = GENDER[:female]
       opp_gender = GENDER[:male]
     end
-    relation_in_laws = []
+    relatives = []
     person = get_member(member_name)
 
     if person.content[:relation] == 'spouse'
-      spouse = person.parent
-      brothers_sisters.each { |s|
-        if s.content[:gender] == same_gender
-          relation_in_laws << {name: s.name, time: s.content[:created_time]}
-        elsif s.content[:gender] == opp_gender 
-          spouse = get_spouse(s)
-          relation_in_laws << {name: spouse.name, time: spouse.content[:created_time]} if spouse.content[:gender] == same_gender
-        end
-        }
+      relatives_1 = relation_wrt_spouse(person,same_gender. opp_gender) 
+      relatives = relatives + relatives_1 
     else
-      siblings = brothers_sisters(person)
-      siblings.each { |s|
-        if s.content[:gender] == opp_gender 
-          spouse = get_spouse(s)
-          relation_in_laws << {name: spouse.name, time: spouse.content[:created_time]}
-        end
-        }
+      relatives_2 = relation_wrt_child(person, same_gender, opp_gender)
+      relatives = relatives + relatives_2
     end 
-
-    sorted_relation = relation_in_laws.sort_by! { |k| k[:time]  }
+    sorted_relation = relatives.sort_by! { |k| k[:time]  }
     sorted_relation_names = sorted_relation.map { |e| e[:name].capitalize  }
     return sorted_relation_names
   end
