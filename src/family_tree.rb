@@ -25,12 +25,13 @@ class FamilyTree
 		relation = params[1]
 		case relation
 		when 'Siblings'
-			get_siblings(person)
+      siblings = get_siblings(person)
+      print_output(siblings)
 		when 'Daughter'
 			get_children(person, GENDER[:female])
 		when 'Son'
 			get_children(person, GENDER[:male])
-		when 'Brother-In-Law' || 'Sister-In-Law'
+		when 'Brother-In-Law','Sister-In-Law'
 			get_relation_in_law(person, relation)
 		when 'Maternal-Aunt'
 			get_maternal_aunt(person)
@@ -69,12 +70,16 @@ private
 		all_siblings.each { |sib|
 			siblings << sib.name.capitalize if sib.content[:relation] == 'child'		
 		}
-		if siblings.empty?
-			puts "NONE"
-		else
-			puts siblings.join(' ')
-		end
+    return siblings
 	end
+
+  def print_output(array)
+    if array.empty?
+      puts "NONE"
+    else
+      puts array.join(' ')
+    end
+  end
 
 	def get_children(member_name, gender)
 		children = []
@@ -157,6 +162,10 @@ private
 			puts maternal_aunts.join(' ')
 		end
 	end
+
+  def get_male_siblings(member_name)
+    get_siblings(member_name)
+  end
 
 	def get_relation_in_law(member_name, relation)
     if relation == 'Brother-In-Law'
