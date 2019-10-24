@@ -28,19 +28,25 @@ class FamilyTree
       siblings = get_siblings(person)
       print_output(siblings)
 		when 'Daughter'
-			get_children(person, GENDER[:female])
+			daughters = get_children(person, GENDER[:female])
+      print_output(siblings)
 		when 'Son'
-			get_children(person, GENDER[:male])
+			sons = get_children(person, GENDER[:male])
+      print_output(sons)
 		when 'Brother-In-Law','Sister-In-Law'
-			get_relation_in_law(person, relation)
+		  get_relation_in_law(person, relation)
 		when 'Maternal-Aunt'
-			get_maternal_aunt(person)
+			maternal_aunts = get_maternal_aunt(person)
+      print_output(maternal_aunts)
 		when 'Paternal-Aunt'
-			get_paternal_aunt(person)
+			paternal_aunts = get_paternal_aunt(person)
+      print_output(paternal_aunts)
 		when 'Maternal-Uncle'
-			get_maternal_uncle(person)
+			maternal_uncles = get_maternal_uncle(person)
+      print_output(maternal_uncles)
 		when 'Paternal-Uncle'
-			get_paternal_uncle(person)
+			paternal_uncles = get_paternal_uncle(person)
+      print_output(paternal_uncles)
 		else
 			puts "Sorry! we will get back to you later"
 		end
@@ -87,12 +93,7 @@ private
 		all_children.each { |node| 
 			children << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == gender
 		  }
-
-		if children.empty?
-			puts "NONE"
-		else
-			puts children.join(' ')
-		end
+    return children
 	end
 	
 	def get_paternal_uncle(member_name)
@@ -105,12 +106,7 @@ private
 				paternal_uncles << uncle.name.capitalize if uncle.content[:gender] == GENDER[:male] && uncle.content[:relation] == 'child'
 			end
 		end
-		if paternal_uncles.empty?
-			puts "NONE"
-		else
-			puts paternal_uncles.join(' ')
-		end
-
+		return paternal_uncles
 	end
 
 	def get_maternal_uncle(member_name)
@@ -122,12 +118,7 @@ private
 		uncles.each do |uncle|
 			maternal_uncles << uncle.name.capitalize if uncle.content[:gender] == GENDER[:male] && uncle.content[:relation] == 'child'
 		end
-		
-		if maternal_uncles.empty?
-			puts "NONE"
-		else
-			puts maternal_uncles.join(' ')
-		end
+		return maternal_uncles
 	end
 
 	def get_paternal_aunt(member_name)
@@ -140,11 +131,7 @@ private
 				paternal_aunts << aunt.name.capitalize if aunt.content[:gender] == GENDER[:female] && aunt.content[:relation] == 'child'
 			end
 		end
-		if paternal_uncles.empty?
-			puts "NONE"
-		else
-			puts paternal_uncles.join(' ')
-		end
+		return paternal_aunts
 	end
 
 	def get_maternal_aunt(member_name)
@@ -155,12 +142,7 @@ private
 		aunts.each { |aunt|
 			maternal_aunts << aunt.name.capitalize if aunt.content[:gender] == GENDER[:female] && aunt.content[:relation] == 'child'
 		}
-		
-		if maternal_aunts.empty?
-			puts "NONE"
-		else
-			puts maternal_aunts.join(' ')
-		end
+		return maternal_aunts
 	end
 
   def get_male_siblings(member_name)
@@ -206,6 +188,7 @@ private
         end
         }
     end 
+
     
     if relation_in_laws.empty?
       puts "NONE"
