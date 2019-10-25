@@ -30,7 +30,7 @@ class FamilyTree
 
   def get_relationship(params)
     required_relatives = []
-    case relation
+    case params[1]
     when 'Siblings'
       required_relatives = get_siblings(params[0])
     when 'Daughter', 'Son'
