@@ -29,35 +29,28 @@ class FamilyTree
   end
 
   def get_relationship(params)
-    person = params[0]
-    relation = params[1]
-    
+    required_relatives = []
     case relation
     when 'Siblings'
-      siblings = get_siblings(person)
-      print_output(siblings)
-    when 'Daughter','Son'
-      children = get_children(person, relation)
-      print_output(children)
-    when 'Brother-In-Law','Sister-In-Law'
-      relations = get_relation(person, relation)
-      print_output(relations)
+      required_relatives = get_siblings(params[0])
+    when 'Daughter', 'Son'
+      required_relatives = get_children(params[0], params[1])
+    when 'Brother-In-Law', 'Sister-In-Law'
+      required_relatives = get_relation(params[0], params[1])
     when 'Maternal-Aunt'
-      maternal_aunts = get_maternal_aunt(person)
-      print_output(maternal_aunts)
+      required_relatives = get_maternal_aunt(params[0])
     when 'Paternal-Aunt'
-      paternal_aunts = get_paternal_aunt(person)
-      print_output(paternal_aunts)
+      required_relatives = get_paternal_aunt(params[0])
     when 'Maternal-Uncle'
-      maternal_uncles = get_maternal_uncle(person)
-      print_output(maternal_uncles)
+      required_relatives = get_maternal_uncle(params[0])
     when 'Paternal-Uncle'
-      paternal_uncles = get_paternal_uncle(person)
-      print_output(paternal_uncles)
+      required_relatives = get_paternal_uncle(params[0])
     else
-      puts 'Sorry! we will get back to you later'
+      required_relatives
     end
+    print_output(required_relatives)
   end
+
 
   def get_member(member_name)
     @root.detect do |node|
@@ -180,7 +173,9 @@ class FamilyTree
     spouse = person.parent
     brothers_sisters.each do |sibling|
       if sibling.content[:gender] == same_gender
+        # rubocop:disable LineLength
         relatives << { name: sibling.name, time: sibling.content[:created_time] }
+        # rubocop:enable LineLength
       elsif sibling.content[:gender] == opp_gender
         spouse = get_spouse(sibling)
         # rubocop:disable LineLength
