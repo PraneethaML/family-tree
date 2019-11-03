@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 load 'src/family_tree.rb'
 load 'src/create_initial_family.rb'
 
