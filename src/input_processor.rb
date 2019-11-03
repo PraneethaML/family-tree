@@ -1,7 +1,7 @@
 load 'src/family_tree.rb'
 load 'src/create_initial_family.rb'
 
-# takes the input
+# Processes the input
 class InputProcessor
   def initialize
     if ARGV.length == 1
