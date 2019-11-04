@@ -7,6 +7,10 @@ RSpec.describe FamilyTree do
   let(:family) { CreateInitialFamily.new }
   let(:tree) { FamilyTree.new(family) }
     
+  before(:each) do
+    FamilyTree.send(:public, *FamilyTree.private_instance_methods)
+  end
+
   it 'creates a FamilyTree class' do
     # family = CreateInitialFamily.new
     # tree = FamilyTree.new(family)
@@ -45,4 +49,9 @@ RSpec.describe FamilyTree do
     expect(tree.get_member('rut_name')).to be_nil
   end
 
+   it 'creates member' do
+    # family = CreateInitialFamily.new
+    # tree = FamilyTree.new(family)
+    expect(tree).to respond_to(:create_member)
+  end
 end
