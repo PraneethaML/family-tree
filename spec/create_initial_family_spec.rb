@@ -13,14 +13,14 @@ RSpec.describe CreateInitialFamily do
   end
 
   it 'creates basic family' do
-  	family = CreateInitialFamily.new
-  	expect(family).to respond_to(:create_basic_family)
+    family = CreateInitialFamily.new
+    expect(family).to respond_to(:create_basic_family)
   end
 
   it 'gets root' do
-  	family = CreateInitialFamily.new
-  	expect(family).to respond_to(:get_root)
+    family = CreateInitialFamily.new
+    expect(family).to respond_to(:get_root)
     family.create_root('root')
-  	expect(family.get_root).to be_kind_of(Tree::TreeNode)
+    expect(family.get_root).to be_kind_of(Tree::TreeNode)
   end
 end
