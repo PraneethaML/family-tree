@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'byebug'
 # Builds the family tree
 class FamilyTree
   GENDER = {
