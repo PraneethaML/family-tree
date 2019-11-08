@@ -73,9 +73,12 @@ class FamilyTree
 
   def get_siblings(member_name)
     siblings = []
-    all_siblings = get_member(member_name).siblings
-    all_siblings.each do |sib|
-      siblings << sib.name.capitalize if sib.content[:relation] == 'child'
+    begin
+      all_siblings = get_member(member_name).siblings
+      all_siblings.each do |sib|
+        siblings << sib.name.capitalize if sib.content[:relation] == 'child'
+      end
+    rescue
     end
     siblings
   end
