@@ -95,63 +95,84 @@ class FamilyTree
     gender = GENDER[:male] if relation == 'Son'
     gender = GENDER[:female] if relation == 'Daughter'
     children = []
-    all_children = get_member(member_name).children
-    all_children.each do |node|
-      # rubocop:disable LineLength
-      children << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == gender
-      # rubocop:enable LineLength
+    begin
+      all_children = get_member(member_name).children
+      all_children.each do |node|
+        # rubocop:disable LineLength
+        children << node.name.capitalize if node.content[:relation] == 'child' && node.content[:gender] == gender
+        # rubocop:enable LineLength
+      end
+    rescue
     end
     children
   end
 
   def get_uncles(parent)
-    parent_siblings = parent.siblings
     uncles = []
-    parent_siblings.each do |sibling|
-      # rubocop:disable LineLength
-      uncles << sibling.name.capitalize if sibling.content[:gender] == GENDER[:male] && sibling.content[:relation] == 'child'
-      # rubocop:enable LineLength
+    begin
+      parent_siblings = parent.siblings
+      parent_siblings.each do |sibling|
+        # rubocop:disable LineLength
+        uncles << sibling.name.capitalize if sibling.content[:gender] == GENDER[:male] && sibling.content[:relation] == 'child'
+        # rubocop:enable LineLength
+      end
+    rescue
     end
     uncles
   end
 
   def get_paternal_uncle(member_name)
-    person = get_member(member_name)
-    father = sofi.parent.parent if person.parent.content[:relation] == 'spouse'
+    begin
+      person = get_member(member_name)
+      father = sofi.parent.parent if person.parent.content[:relation] == 'spouse'
+    rescue
+    end
     paternal_uncles = get_uncles(father)
     paternal_uncles
   end
 
   def get_maternal_uncle(member_name)
-    person = get_member(member_name)
-    mother = person.parent
+    begin
+      person = get_member(member_name)
+      mother = person.parent
+    rescue
+    end
     maternal_uncles = get_uncles(mother)
     maternal_uncles
   end
 
   def get_aunts(parent)
-    parent_siblings = parent.siblings
     aunts = []
-    parent_siblings.each do |sibling|
-      # rubocop:disable LineLength
-      aunts << sibling.name.capitalize if sibling.content[:gender] == GENDER[:female] && sibling.content[:relation] == 'child'
-      # rubocop:enable LineLength
+    begin
+      parent_siblings = parent.siblings
+      parent_siblings.each do |sibling|
+        # rubocop:disable LineLength
+        aunts << sibling.name.capitalize if sibling.content[:gender] == GENDER[:female] && sibling.content[:relation] == 'child'
+        # rubocop:enable LineLength
+      end
+    rescue
     end
     aunts
   end
 
   def get_paternal_aunt(member_name)
-    person = get_member(member_name)
-    # rubocop:disable LineLength
-    father = person.parent.parent if person.parent.content[:relation] == 'spouse'
-    # rubocop:enable LineLength
+    begin
+      person = get_member(member_name)
+      # rubocop:disable LineLength
+      father = person.parent.parent if person.parent.content[:relation] == 'spouse'
+      # rubocop:enable LineLength
+    rescue
+    end
     paternal_aunts = get_aunts(father)
     paternal_aunts
   end
 
   def get_maternal_aunt(member_name)
-    person = get_member(member_name)
-    mother = person.parent
+    begin
+      person = get_member(member_name)
+      mother = person.parent
+    rescue
+    end
     maternal_aunts = get_aunts(mother)
     maternal_aunts
   end
