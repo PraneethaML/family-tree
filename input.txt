@@ -7,3 +7,8 @@ ADD_CHILD Asva Vani Female
 GET_RELATIONSHIP Vasa Siblings
 GET_RELATIONSHIP Atya Sister-In-Law
 GET_RELATIONSHIP Lavnya Brother-In-Law
+GET_RELATIONSHIP Lavnya Grand_Parents
+GET_RELATIONSHIP kriya Grand_Parents
+GET_RELATIONSHIP vasa Grand_Parents
+GET_RELATIONSHIP yodhan Grand_Parents
+GET_RELATIONSHIP lika Grand_Parents

@@ -1,3 +1,4 @@
+require 'byebug'
 # frozen_string_literal: true
 # Builds the family tree
 class FamilyTree
@@ -29,6 +30,7 @@ class FamilyTree
 
   def get_relationship(params)
     required_relatives = []
+
     case params[1]
     when 'Siblings'
       required_relatives = get_siblings(params[0])
@@ -44,6 +46,8 @@ class FamilyTree
       required_relatives = get_maternal_uncle(params[0])
     when 'Paternal-Uncle'
       required_relatives = get_paternal_uncle(params[0])
+    when 'Grand_Parents'
+      required_relatives = get_grand_parents(params[0])
     else
       required_relatives
     end
@@ -183,6 +187,90 @@ class FamilyTree
     actual_siblings = siblings_nodes.select { |sibling| sibling.content[:relation] == 'child' }
     # rubocop:enable LineLength
     actual_siblings
+  end
+
+  def get_grand_parents1(member_name)
+    grand_parents = []
+    begin
+      person = get_member(member_name)
+      person_mother = person.parent
+      if person_mother.content[:relation] == 'child'
+        grand_mother = person_mother.parent
+      elsif person_mother.content[:relation] == 'spouse'
+        husband = person_mother.parent
+        grand_mother = husband.parent
+      end
+      
+      relation_of_grand_mother = get_member_relation(grand_mother)
+      if relation_of_grand_mother == 'spouse'
+        grand_father = grand_mother.parent
+      elsif relation_of_grand_mother == 'child'
+        grand_father = get_spouse(grand_mother)
+      end
+
+      grand_parents << grand_mother.name.capitalize
+      grand_parents << grand_father.name.capitalize
+    rescue 
+      
+    end
+    grand_parents
+  end
+
+  def get_mother(member_name)
+    member = get_member(member_name)
+    relation_to_family = get_member_relation
+    # if relation_to_family == 'child'
+    #   mother = member.parent
+    # else
+    #   mother = nil
+    # end
+    mother.parent if relation_to_family == 'child'
+
+  end
+
+  def get_father(member_name)
+
+    father = get_father(member_name)
+    get_member_relation
+    
+  end
+
+  def get_parent(member_name)
+    mother = get_mother
+    father = get_father
+  end
+
+  def get_grand_parents(member_name)
+    grand_parents = []
+    begin
+      person = get_member(member_name)
+      person_mother = person.parent
+      if person_mother.content[:relation] == 'child'
+        grand_mother = person_mother.parent
+      elsif person_mother.content[:relation] == 'spouse'
+        husband = person_mother.parent
+        grand_mother = husband.parent
+      end
+      
+      relation_of_grand_mother = get_member_relation(grand_mother)
+      if relation_of_grand_mother == 'spouse'
+        grand_father = grand_mother.parent
+      elsif relation_of_grand_mother == 'child'
+        grand_father = get_spouse(grand_mother)
+      end
+
+      grand_parents << grand_mother.name.capitalize
+      grand_parents << grand_father.name.capitalize
+    rescue 
+      
+    end
+    grand_parents
+  end
+
+
+  def get_member_relation(member_node)
+    relation_to_family = member_node.content[:relation]
+    relation_to_family
   end
 
   def get_spouse(person)
