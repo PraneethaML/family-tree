@@ -28,3 +28,4 @@ create_basic_family jnki lavnya female child
 create_basic_family krpi kriya male child
 create_basic_family satvy vasa male child
 create_basic_family krpi krithi female child
+create_basic_family jnki laki male child
